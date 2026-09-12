@@ -1,0 +1,62 @@
+name: Verilog Examples
+
+on:
+  push:
+    paths:
+      - 'Verilog_Examples/**/*.v'
+
+  pull_request:
+    paths:
+      - 'Verilog_Examples/**/*.v'
+
+jobs:
+  verilog-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Run Verilog tests
+        shell: bash
+        run: |
+          set -e
+
+          found=0
+
+          while IFS= read -r -d '' tb; do
+
+            found=1
+
+            echo "======================================"
+            echo "Testing: $tb"
+            echo "======================================"
+
+            design="${tb/_tb.v/.v}"
+
+            if [ ! -f "$design" ]; then
+              echo "ERROR: Design file not found:"
+              echo "$design"
+              exit 1
+            fi
+
+            iverilog -o simulation "$design" "$tb"
+
+            vvp simulation
+
+            rm -f simulation
+
+            echo "PASS: $tb"
+            echo
+
+          done < <(find Verilog_Examples -type f -name "*_tb.v" -print0)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No testbench found."
+            echo "Nothing to test."
+          fi
