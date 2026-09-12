@@ -135,6 +135,7 @@ Create a Pull Request describing:
 Please ensure that:
 
 - Code is properly formatted.
+- The test bench file must be (<FILE_NAME>_tb.v) format only 
 - Use meaningful module names.
 - Use descriptive comments when necessary.
 - Keep explanations beginner-friendly.
@@ -148,7 +149,7 @@ Please ensure that:
 Before opening a Pull Request, make sure:
 
 - [ ] Code compiles successfully.
-- [ ] Testbench is included.
+- [ ] Testbench is included with proper file name as given above.
 - [ ] README is included.
 - [ ] Explanation is beginner-friendly.
 - [ ] No unnecessary files are added.
