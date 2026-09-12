@@ -4,7 +4,9 @@ module mux8to1(
     output reg out
 );
 
-always @(*) begin
+always @(*) 
+
+begin
     case(sel)
         3'b000: out = a[0];
         3'b001: out = a[1];
